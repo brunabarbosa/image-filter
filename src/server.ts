@@ -30,21 +30,28 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
   //! END @TODO1
 
-  // Root Endpoint
-  // Displays a simple message to the user
   app.get("/filteredimage", async (req, res) => {
-    // res.send("try GET /filteredimage?image_url={{}}")
     const { image_url } = req.query;
 
     if (!image_url) {
       return res.status(400).send("image_url is required");
     }
 
-    filterImageFromURL(image_url).then((url) => {
-      console.log("url:", url);
-    });
+    const filteredpath = await filterImageFromURL(image_url);
 
-    console.log("image_url:", image_url);
+    res.status(200).sendFile(filteredpath, async (err) => {
+      if (err) {
+        throw new Error("Cannot download image");
+      }
+
+      await deleteLocalFiles([filteredpath]);
+    });
+  });
+
+  // Root Endpoint
+  // Displays a simple message to the user
+  app.get("/", async (req, res) => {
+    res.send("try GET /filteredimage?image_url={{}}");
   });
 
   // Start the Server
