@@ -41,7 +41,7 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
     res.status(200).sendFile(filteredpath, async (err) => {
       if (err) {
-        throw new Error("Cannot download image");
+        return res.status(422).send("Cannot process image");
       }
 
       await deleteLocalFiles([filteredpath]);
