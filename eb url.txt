@@ -1,1 +1,0 @@
-http://udagram-bb-dev-dev.us-west-2.elasticbeanstalk.com/
